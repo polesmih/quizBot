@@ -23,9 +23,9 @@ public class ConfigSettings {
     private String jsonArt;
     private String jsonLegend;
     private String jsonNetsuke;
-    private String pathArtUsers;
-    private String pathLegendUsers;
-    private String pathNetsukeUsers;
+    private String pathUsersArt;
+    private String pathUsersLegend;
+    private String pathUsersNetsuke;
 
 
 
@@ -95,18 +95,18 @@ public class ConfigSettings {
                 throw new RuntimeException("Json value is null");
             }
 
-            pathArtUsers = properties.getProperty("path.users.art");
-            if (pathArtUsers == null) {
+            pathUsersArt = properties.getProperty("path.users.art");
+            if (pathUsersArt == null) {
                 throw new RuntimeException("Json value is null");
             }
 
-            pathLegendUsers = properties.getProperty("path.users.legend");
-            if (pathLegendUsers == null) {
+            pathUsersLegend = properties.getProperty("path.users.legend");
+            if (pathUsersLegend == null) {
                 throw new RuntimeException("Json value is null");
             }
 
-            pathNetsukeUsers = properties.getProperty("path.users.netsuke");
-            if (pathNetsukeUsers == null) {
+            pathUsersNetsuke = properties.getProperty("path.users.netsuke");
+            if (pathUsersNetsuke == null) {
                 throw new RuntimeException("Json value is null");
             }
 

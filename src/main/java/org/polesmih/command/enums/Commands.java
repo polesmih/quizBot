@@ -5,7 +5,8 @@ public enum Commands {
     START ("/start"),
     KEY ("/key"),
     RULES ("/rules"),
-    INFO ("/info");
+    INFO ("/info"),
+    DONATE ("/donate");
 
 
     private final String commandType;

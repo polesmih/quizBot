@@ -1,4 +1,4 @@
-package org.polesmih.util;
+package org.polesmih.util.gameTools;
 
 import lombok.SneakyThrows;
 import org.polesmih.json.ParserJson;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class GetFieldValue {
 
 
-//    получение значения строкового поля из объекта java
+//    стандрартное получение значения строкового поля из объекта java
     @SneakyThrows
     public static String getFieldValue(Question question, String fieldName) {
 //        получаем доступ к значению поля через рефлексию
@@ -51,15 +51,6 @@ public class GetFieldValue {
             array[i] = temp;
         }
         return array;
-    }
-
-//    получение всех элементов всех объектов json в виде строки для последующего поиска в ней значений
-    public static String allElementsAllObjectsToString(String fileName) {
-        List<Question> questionList = new ArrayList<Question>(ParserJson.fileToList(fileName));
-
-        return questionList.stream()
-                .map(Question :: toString)
-                .collect(Collectors.toList()).toString();
     }
 
 }

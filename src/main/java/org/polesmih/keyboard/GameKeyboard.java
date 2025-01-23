@@ -1,5 +1,6 @@
 package org.polesmih.keyboard;
 
+import org.polesmih.keyboard.enums.GameButtons;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -12,17 +13,20 @@ import java.util.List;
 
 public class GameKeyboard {
 
-    public static ReplyKeyboardMarkup createFunctionalKeyboard(String game) {
+    public static ReplyKeyboardMarkup createFunctionalKeyboard(String game, String statistic) {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(game);
-//        row1.add(GameButtons.MAIN.getButtonType());
+        row1.add(GameButtons.MAIN.getButtonType());
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setKeyboard(Arrays.asList(row1));
-        replyKeyboardMarkup.setResizeKeyboard(true);
-//        replyKeyboardMarkup.setOneTimeKeyboard(true);
+        KeyboardRow row2 = new KeyboardRow();
+        row2.add(statistic);
 
-        return replyKeyboardMarkup;
+        return ReplyKeyboardMarkup.builder()
+                .keyboard(Arrays.asList(row1
+                        , row2
+                ))
+                .resizeKeyboard(true)
+                .build();
     }
 
 

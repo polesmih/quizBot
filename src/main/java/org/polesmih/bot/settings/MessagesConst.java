@@ -17,29 +17,22 @@ public class MessagesConst {
     public final static String CHOOSE_GAME = "На появившейся клавиатуре выбери игру " +
             EmojiParser.parseToUnicode(":point_down:");
 
-//    public final static String NEXT = "\n\nЧто дальше? \n(выбери действие на клавиатуре) " +
-//            EmojiParser.parseToUnicode(":point_down:");
-
-    public final static String NEXT = "\n\nДля продолжения нажми кнопку \"Дальше\" " +
+    public final static String NEXT = "\n\nЧто дальше? \n(выбери действие на клавиатуре) " +
             EmojiParser.parseToUnicode(":point_down:");
 
     public final static String WIN = "Верно! " + EmojiParser.parseToUnicode(":+1:") +
             "\nЭто ";
 
-
-//    public final static String FAIL = EmojiParser.parseToUnicode(":warning:") +
-//            "   Не угадал... " +
-//            "\nПопробуй другой вариант ответа " +
-//            EmojiParser.parseToUnicode(":point_up:") +
-//           "\nили для продолжения выбери действие на клавиатуре " +
-//            EmojiParser.parseToUnicode(":point_down:");
-
     public final static String FAIL = EmojiParser.parseToUnicode(":warning:") +
             "   Не угадал... " +
             "\nПопробуй другой вариант ответа " +
             EmojiParser.parseToUnicode(":point_up:") +
-            "\nили для продолжения нажми кнопку \"Дальше\" " +
+           "\nили для продолжения выбери действие на клавиатуре " +
             EmojiParser.parseToUnicode(":point_down:");
+
+    public final static String FINAL = EmojiParser.parseToUnicode(":sparkles:") +
+            EmojiParser.parseToUnicode(":sparkles:") +
+            "   Ну вот и все, все вопросы закончились!" + NEXT;
 
        public final static String INSTRUCTION = EmojiParser.parseToUnicode(":small_red_triangle:") +
                "Твоя задача - ответить на вопросы, которые высылает бот. " +
@@ -61,5 +54,9 @@ public class MessagesConst {
     public final static String CITY = "\nЕсли хочешь поиграть в города, " +
             "\nприглашаем воспользоваться ботом " +
             "\n<a href=\"https://t.me/CityQuizGame_bot\">Игра в города</a>";
+
+    public final static String DOG_SHELTER = "Сделай доброе дело - " +
+            "помоги Фонду\n<a href=\"https://donate.priut.ru\">Помощь бездомным собакам</a> " +
+            EmojiParser.parseToUnicode(":dog:");
 
 }
