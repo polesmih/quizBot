@@ -9,6 +9,7 @@ public interface BotCommands {
             new BotCommand("/start", "запуск бота"),
             new BotCommand("/key", "выбрать игру"),
             new BotCommand("/rules", "правила игры"),
-            new BotCommand("/info", "наши проекты")
+            new BotCommand("/info", "наши проекты"),
+            new BotCommand("/donate", "благотворительность")
     );
 }

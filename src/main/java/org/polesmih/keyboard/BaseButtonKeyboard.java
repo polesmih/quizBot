@@ -15,24 +15,20 @@ public class BaseButtonKeyboard {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(StartButtons.ART.getButtonType());
 
-//        KeyboardRow row2 = new KeyboardRow();
-//        row2.add(StartButtons.LEGEND.getButtonType());
-//
-//        KeyboardRow row3 = new KeyboardRow();
-//        row3.add(StartButtons.NETSUKE.getButtonType());
+        KeyboardRow row2 = new KeyboardRow();
+        row2.add(StartButtons.LEGEND.getButtonType());
+
+        KeyboardRow row3 = new KeyboardRow();
+        row3.add(StartButtons.NETSUKE.getButtonType());
 
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setKeyboard(Arrays.asList(row1
-//                , row2
-//                , row3
-
-        ));
-        replyKeyboardMarkup.setResizeKeyboard(true);
-
-        return replyKeyboardMarkup;
+        return ReplyKeyboardMarkup.builder()
+                .keyboard(Arrays.asList(row1
+//                        , row2
+//                        , row3
+                ))
+                .resizeKeyboard(true)
+                .build();
     }
-
-
 
 }

@@ -15,6 +15,7 @@ public class CommandTypes {
         types.add(KEY.getCommandType());
         types.add(RULES.getCommandType());
         types.add(INFO.getCommandType());
+        types.add(DONATE.getCommandType());
 
         return types;
 

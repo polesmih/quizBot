@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 public class Question {
 
+    private String id;
     private String question;
     private String[] options;
     private String answer;
