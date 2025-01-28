@@ -2,7 +2,6 @@ package org.polesmih.util.gameTools;
 
 import lombok.SneakyThrows;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -17,19 +16,15 @@ public class FileManager {
     }
 
 
+    @SneakyThrows
     public static void writeToFile(String pathUserFile, String mark, Long userId, String indicator) {
-        try {
-            // Создание файла, конвертация String в byte-массив и запись в файл (даже если файл существует)
+// Создание файла, конвертация String в byte-массив и запись в файл (даже если файл существует)
             Files.write(
                     getPathUserFile(pathUserFile, mark, userId),
                     indicator.getBytes(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @SneakyThrows

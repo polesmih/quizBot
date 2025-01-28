@@ -4,43 +4,30 @@ import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.keyboard.BaseButtonKeyboard;
+import org.polesmih.util.UpdateUtil;
 import org.polesmih.util.gameTools.FileManager;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import static org.polesmih.bot.settings.MessagesConst.*;
 import static org.polesmih.command.enums.Commands.*;
 
 
 public class CommandHandler extends TelegramLongPollingBot {
-
-    long chatId;
-    long userId;
-    String messageText;
     private final static ConfigSettings settings = ConfigSettings.getInstance();
+    final BaseButtonKeyboard baseButtonKeyboard = new BaseButtonKeyboard();
 
-
-    @Override
-    public String getBotUsername() {
-        return settings.getUserName();
-    }
-
-    @Override
-    public String getBotToken() {
-        return settings.getToken();
-    }
 
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        update.getUpdateId();
-        chatId = update.getMessage().getChatId();
-        userId = update.getMessage().getFrom().getId();
-        messageText = update.getMessage().getText();
 
-        Message message = update.getMessage();
+        long chatId = UpdateUtil.getChatFromUpdate(update).getId();
+        User user = UpdateUtil.getUserFromUpdate(update);
+        String messageText = update.getMessage().getText();
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(update.getMessage().getChatId().toString());
@@ -49,21 +36,17 @@ public class CommandHandler extends TelegramLongPollingBot {
 
             if (messageText.equals(START.getCommandType())) {
 
-                execute(Sender.sendMessage(chatId, "Привет, " + message.getFrom().getFirstName() + HELLO));
-                sendMessage.setText(CHOOSE_GAME);
-                sendMessage.setReplyMarkup(new BaseButtonKeyboard().createBaseStartKeyboard());
-                execute(sendMessage);
+                execute(Sender.sendMessage(chatId, "Привет, " + user.getFirstName() + HELLO));
+                execute(baseButtonKeyboard.createKeyboard(chatId));
 
 // создаем сразу при старте пустые файлы пользователя для записи индикаторов вопросов
-                FileManager.writeToFile(settings.getPathUsersArt(), "q", userId, "");
-                FileManager.writeToFile(settings.getPathUsersLegend(), "q", userId, "");
-                FileManager.writeToFile(settings.getPathUsersNetsuke(), "q", userId, "");
+                FileManager.writeToFile(settings.getPathUsersArt(), "q", user.getId(), "");
+                FileManager.writeToFile(settings.getPathUsersLegend(), "q", user.getId(), "");
+                FileManager.writeToFile(settings.getPathUsersNetsuke(), "q", user.getId(), "");
 
 
             } else if (messageText.equals(KEY.getCommandType())) {
-                sendMessage.setText(CHOOSE_GAME);
-                sendMessage.setReplyMarkup(new BaseButtonKeyboard().createBaseStartKeyboard());
-                execute(sendMessage);
+                execute(baseButtonKeyboard.createKeyboard(chatId));
 
             } else if (messageText.equals(RULES.getCommandType())) {
                 execute(Sender.sendMessage(chatId, INSTRUCTION));
@@ -77,8 +60,18 @@ public class CommandHandler extends TelegramLongPollingBot {
                 execute(Sender.sendMessage(chatId, DOG_SHELTER));
 
             }
-
         }
+    }
+
+
+    @Override
+    public String getBotUsername() {
+        return settings.getUserName();
+    }
+
+    @Override
+    public String getBotToken() {
+        return settings.getToken();
     }
 
 }
