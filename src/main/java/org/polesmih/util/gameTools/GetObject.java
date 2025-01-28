@@ -75,18 +75,18 @@ public class GetObject {
 
     }
 
-//// получение объекта с параментрами id, взятого из последней строки файла пользователя с вопросами
-//    public static Question getQuestionOnLastLineFromUserFile(String jsonFileName,
-//                                                             String pathUserFile, String mark, long userId) {
-//
-//        List<Question> questionList = ParserJson.fileToList(jsonFileName);
-//        String id = getLastLineFromUserFile(pathUserFile, mark, userId);
-//
-//        return questionList.stream()
-//                .filter(q -> q.getId().equals(id))
-//                .findAny()
-//                .orElse(null);
-//    }
+// получение объекта с параментрами id, взятого из последней строки файла пользователя с вопросами
+    public static Question getQuestionOnLastLineFromUserFile(String jsonFileName,
+                                                             String pathUserFile, String mark, long userId) {
+
+        List<Question> questionList = ParserJson.fileToList(jsonFileName);
+        String id = getLastLineFromUserFile(pathUserFile, mark, userId);
+
+        return questionList.stream()
+                .filter(q -> q.getId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
 
 
 }

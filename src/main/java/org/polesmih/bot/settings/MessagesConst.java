@@ -12,34 +12,32 @@ public class MessagesConst {
             EmojiParser.parseToUnicode(":wink:") +
             "\n\nВ этой игре ты сможешь проверить свои знания в разных областях культуры." +
             "\nПока у нас одна викторина, но со временем тебя ждет много интересного!  " +
-            EmojiParser.parseToUnicode(":sparkles:");
-
-    public final static String CHOOSE_GAME = "На появившейся клавиатуре выбери игру " +
-            EmojiParser.parseToUnicode(":point_down:");
-
-    public final static String NEXT = "\n\nЧто дальше? \n(выбери действие на клавиатуре) " +
-            EmojiParser.parseToUnicode(":point_down:");
+            EmojiParser.parseToUnicode(":sparkles:") +
+            "\n\n" + EmojiParser.parseToUnicode(":exclamation:") +
+            "  Если что-то пойдет не так или бот перестанет тебе отвечать " +
+            "- выбери в меню команду \"запуск бота\" и перезапусти его  " +
+            EmojiParser.parseToUnicode(":recycle:");
 
     public final static String WIN = "Верно! " + EmojiParser.parseToUnicode(":+1:") +
-            "\nЭто ";
+            "\n\nЭто ";
 
     public final static String FAIL = EmojiParser.parseToUnicode(":warning:") +
             "   Не угадал... " +
             "\nПопробуй другой вариант ответа " +
             EmojiParser.parseToUnicode(":point_up:") +
-           "\nили для продолжения выбери действие на клавиатуре " +
+            "\nили выбери действие " +
             EmojiParser.parseToUnicode(":point_down:");
 
-    public final static String FINAL = EmojiParser.parseToUnicode(":sparkles:") +
-            EmojiParser.parseToUnicode(":sparkles:") +
-            "   Ну вот и все, все вопросы закончились!" + NEXT;
-
-       public final static String INSTRUCTION = EmojiParser.parseToUnicode(":small_red_triangle:") +
-               "Твоя задача - ответить на вопросы, которые высылает бот. " +
+    public final static String INSTRUCTION = EmojiParser.parseToUnicode(":small_red_triangle:") +
+            "Твоя задача - ответить на вопросы, которые высылает бот. " +
             "Для этого нужно просто выбрать один из предложенных вариантов ответов. " +
             "\n\n" + EmojiParser.parseToUnicode(":small_orange_diamond:") +
             "  Чтобы выбрать другую викторину или посмотреть правила игры " +
-            "- выбери соответствующий раздел в меню.";
+            "- выбери соответствующий раздел в меню." +
+            "\n\n" + EmojiParser.parseToUnicode(":exclamation:") +
+            "  Если что-то пошло не так или бот перестал тебе отвечать " +
+            "- выбери в меню команду \"запуск бота\" и перезапусти его  " +
+            EmojiParser.parseToUnicode(":recycle:");
 
     public final static String UNKNOWN = "Неизвестный запрос... " +
             EmojiParser.parseToUnicode(":thinking:");
@@ -58,5 +56,14 @@ public class MessagesConst {
     public final static String DOG_SHELTER = "Сделай доброе дело - " +
             "помоги Фонду\n<a href=\"https://donate.priut.ru\">Помощь бездомным собакам</a> " +
             EmojiParser.parseToUnicode(":dog:");
+
+
+
+//    public final static String NEXT = "Что дальше?" +
+//            EmojiParser.parseToUnicode(":point_down:");
+//
+//    public final static String FINAL = EmojiParser.parseToUnicode(":sparkles:") +
+//            EmojiParser.parseToUnicode(":sparkles:") +
+//            "   Ну вот и все, все вопросы закончились!" + NEXT;
 
 }
