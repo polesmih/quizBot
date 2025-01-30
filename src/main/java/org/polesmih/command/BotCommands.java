@@ -8,6 +8,7 @@ public interface BotCommands {
     List<BotCommand> LIST_OF_COMMAND = List.of(
             new BotCommand("/start", "запуск бота"),
             new BotCommand("/key", "выбрать игру"),
+            new BotCommand("/clean", "удалить статистику"),
             new BotCommand("/rules", "правила игры"),
             new BotCommand("/info", "наши проекты"),
             new BotCommand("/donate", "благотворительность")
