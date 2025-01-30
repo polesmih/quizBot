@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -14,7 +15,7 @@ import java.sql.Date;
 
 public class UserModel {
 
-    private Date date;
+    private LocalDateTime date;
     private Long userTgId;
     private String firstName;
 

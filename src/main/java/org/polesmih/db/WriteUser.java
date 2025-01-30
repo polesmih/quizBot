@@ -1,11 +1,12 @@
 package org.polesmih.db;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class WriteUser {
 
     static UserModel user = new UserModel();
-    public static void artWriteUserIntoDb(Date date, Long id, String firstName) {
+    public static void artWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
 
         user.setDate(date);
         user.setUserTgId(id);
@@ -17,7 +18,7 @@ public class WriteUser {
 
     }
 
-    public static void legendWriteUserIntoDb(Date date, Long id, String firstName) {
+    public static void legendWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
 
         user.setDate(date);
         user.setUserTgId(id);
@@ -29,7 +30,7 @@ public class WriteUser {
 
     }
 
-    public static void netsukeWriteUserIntoDb(Date date, Long id, String firstName) {
+    public static void netsukeWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
 
         user.setDate(date);
         user.setUserTgId(id);

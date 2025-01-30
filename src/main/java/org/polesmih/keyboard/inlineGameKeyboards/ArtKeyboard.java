@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ArtKeyboard {
 
-    public SendMessage createKeyboard(long chatId, String opt1, String opt2, String opt3) {
+    public SendMessage createKeyboard(long chatId, String opt1, String opt2, String opt3, String statisticCallBack) {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
@@ -39,10 +39,29 @@ public class ArtKeyboard {
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         row3.add(button3);
 
+// ряд функциональных кнопок
+        InlineKeyboardButton button4 = InlineKeyboardButton
+                .builder()
+                .text("Статистика")
+                .callbackData(statisticCallBack)
+                .build();
+
+        InlineKeyboardButton button5 = InlineKeyboardButton
+                .builder()
+                .text("На главную")
+                .callbackData("TO_MAIN")
+                .build();
+
+        List<InlineKeyboardButton> row4 = new ArrayList<>();
+        row4.add(button4);
+        row4.add(button5);
+
+
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
+        keyboard.add(row4);
 
         sendMessage.setReplyMarkup(
                 InlineKeyboardMarkup
@@ -52,6 +71,5 @@ public class ArtKeyboard {
 
         return sendMessage;
     }
-
 
 }
