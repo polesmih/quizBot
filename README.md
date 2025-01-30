@@ -26,19 +26,21 @@ Telegram Bot API
 
 1. Активация бота и меню
    
-![IMG_8039](https://github.com/user-attachments/assets/8c5aaf1b-6440-4c92-8ff9-f7336da14762)  
-
-![IMG_8040](https://github.com/user-attachments/assets/5a8b686d-19c6-4d4c-b9f2-2bd53721d950)  
-
-![IMG_8043](https://github.com/user-attachments/assets/79f06a55-f4c1-4e65-aba1-4f47c9509b4d)  
+![IMG_8182](https://github.com/user-attachments/assets/9fae6987-bfae-4095-b2e8-c16c20c00a41)  
+  
+![IMG_8183](https://github.com/user-attachments/assets/911ba20b-99ad-4377-87a5-a4d7b5c89ed9)  
+  
 
  
   
-2. Обработка ответов пользователя
+2. Обработка ответов пользователя (верных и неверных) и запроса статистики
    
-![IMG_8041](https://github.com/user-attachments/assets/788be097-12ce-4696-b0d3-a0a793f35c16)  
+![IMG_8184](https://github.com/user-attachments/assets/4c309fe9-7ab4-4a1b-a26b-0892a7c84fb8)  
 
-![IMG_8042](https://github.com/user-attachments/assets/b2b08f90-0e4a-4735-9d1e-8dc2ffcaf5a4)  
+![IMG_8185](https://github.com/user-attachments/assets/377218ca-dcde-4467-9142-35a58304174c)  
+
+![IMG_8186](https://github.com/user-attachments/assets/b59c8b96-2c2c-4a2b-9f5b-cc8f41984e57)  
+
 
   
   
