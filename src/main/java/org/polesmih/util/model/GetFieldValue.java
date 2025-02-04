@@ -1,14 +1,10 @@
-package org.polesmih.util.gameTools;
+package org.polesmih.util.model;
 
 import lombok.SneakyThrows;
-import org.polesmih.json.ParserJson;
-import org.polesmih.util.pojo.Question;
+import org.polesmih.util.model.pojo.Question;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class GetFieldValue {
 

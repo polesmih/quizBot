@@ -45,17 +45,14 @@ public class ArtKeyboard {
                 .text("Статистика")
                 .callbackData(statisticCallBack)
                 .build();
-
         InlineKeyboardButton button5 = InlineKeyboardButton
                 .builder()
                 .text("На главную")
                 .callbackData("TO_MAIN")
                 .build();
-
         List<InlineKeyboardButton> row4 = new ArrayList<>();
         row4.add(button4);
         row4.add(button5);
-
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);

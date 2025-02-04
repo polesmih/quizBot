@@ -1,14 +1,13 @@
-package org.polesmih.handler;
+package org.polesmih.bot;
 
 import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.keyboard.BaseButtonKeyboard;
 import org.polesmih.util.UpdateUtil;
-import org.polesmih.util.gameTools.FileManager;
+import org.polesmih.bot.settings.FileManager;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 

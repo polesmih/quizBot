@@ -1,4 +1,4 @@
-package org.polesmih.util.pojo;
+package org.polesmih.util.model.pojo;
 
 import lombok.*;
 
