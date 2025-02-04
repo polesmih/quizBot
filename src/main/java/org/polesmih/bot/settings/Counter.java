@@ -1,9 +1,8 @@
-package org.polesmih.util.gameTools;
+package org.polesmih.bot.settings;
 
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Counter {

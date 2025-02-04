@@ -3,7 +3,7 @@ package org.polesmih.json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.polesmih.util.pojo.Question;
+import org.polesmih.util.model.pojo.Question;
 
 import java.util.ArrayList;
 import java.util.List;

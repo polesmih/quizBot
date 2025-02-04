@@ -1,8 +1,7 @@
-package org.polesmih.util.gameTools;
+package org.polesmih.bot.settings;
 
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;

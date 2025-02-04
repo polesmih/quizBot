@@ -2,16 +2,20 @@ package org.polesmih.bot;
 
 import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
+import org.polesmih.bot.settings.Counter;
+import org.polesmih.bot.settings.FileManager;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.command.CommandTypes;
 import org.polesmih.db.WriteUser;
-import org.polesmih.handler.CommandHandler;
 import org.polesmih.keyboard.BaseButtonKeyboard;
 import org.polesmih.keyboard.inlineGameKeyboards.ArtKeyboard;
 import org.polesmih.keyboard.inlineGameKeyboards.FunctionalGameKeyboard;
+import org.polesmih.keyboard.inlineGameKeyboards.LegendKeyboard;
 import org.polesmih.util.UpdateUtil;
-import org.polesmih.util.gameTools.*;
-import org.polesmih.util.pojo.Question;
+import org.polesmih.util.model.GetFieldValue;
+import org.polesmih.util.model.GetObject;
+import org.polesmih.util.model.ReceiveOptAnsDesc;
+import org.polesmih.util.model.pojo.Question;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -34,8 +38,11 @@ public class Bot extends TelegramLongPollingBot {
     public static BaseButtonKeyboard baseButtonKeyboard = new BaseButtonKeyboard();
     public final FunctionalGameKeyboard functionalGameKeyboard = new FunctionalGameKeyboard();
     public final ArtKeyboard artKeyboard = new ArtKeyboard();
+    public final LegendKeyboard legendKeyboard = new LegendKeyboard();
     public static final String ART_NEXT = "NEXT_PAINT";
     public static final String ART_STATISTIC = "ART_RESULT";
+    public static final String LEGEND_NEXT = "NEXT_LEGEND";
+    public static final String LEGEND_STATISTIC = "LEGEND_RESULT";
     public static final String TO_MAIN = "TO_MAIN";
 
 
@@ -69,7 +76,7 @@ public class Bot extends TelegramLongPollingBot {
 
             } else if (messageText.equals(LEGEND.getButtonType())) {
                 WriteUser.legendWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName());
-
+                sendLegendQuest(update);
 
             } else if (messageText.equals(NETSUKE.getButtonType())) {
                 WriteUser.netsukeWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName());
@@ -84,55 +91,85 @@ public class Bot extends TelegramLongPollingBot {
             long chatId = UpdateUtil.getChatFromUpdate(update).getId();
             long userId = UpdateUtil.getUserFromUpdate(update).getId();
 
-            if (callData.equals(
-                    ReceiveAnswerAndDescription.receiveAnswer(update, settings.getJsonArt(),
-                            settings.getPathUsersArt(), "q"))
-            ) {
+// если callData есть в списке вариантов ответа на вопрос по художникам
+            if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonArt(),
+                    settings.getPathUsersArt(), "q").contains(callData)) {
+// если ответ соответствует ответу по художникам
+                if (callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonArt(),
+                        settings.getPathUsersArt(), "q"))) {
 // записываем в файл маркер ответа - R, если ответ верный
-                FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "R"
-                        + System.lineSeparator());
-
+                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "R"
+                            + System.lineSeparator());
 // выдаем пользователю сообщение с результатом и описанием
-                execute(Sender.sendMessage(chatId, WIN +
-                        ReceiveAnswerAndDescription.receiveDescription(update, settings.getJsonArt(),
-                                settings.getPathUsersArt(), "q")));
-// и сразу же отправляем новый вопрос
-                sendArtQuest(update);
+                    execute(Sender.sendMessage(chatId, WIN +
+                            ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonArt(),
+                                    settings.getPathUsersArt(), "q")));
+// и сразу же отправляем новый вопрос по художникам
+                    sendArtQuest(update);
+
+// в противном случае (ответ по художникам неверный, записываем в файл маркер отввета - w
+// и выдаем пользователю сообщение с результатом и игровой клавиатурой
+                } else {
+                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "w"
+                            + System.lineSeparator());
+                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL,
+                            "Следующая картина",
+                            ART_NEXT,
+                            ART_STATISTIC));
+                }
+
+
+// то же самое по легендам и мифам
+            } else if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonLegend(),
+                    settings.getPathUsersLegend(), "q").contains(callData)) {
+
+                if (callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonLegend(),
+                        settings.getPathUsersLegend(), "q"))) {
+
+                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "R"
+                            + System.lineSeparator());
+                    execute(Sender.sendMessage(chatId, WIN +
+                            ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonLegend(),
+                                    settings.getPathUsersLegend(), "q")));
+
+                    sendLegendQuest(update);
+
+                } else {
+                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "w"
+                            + System.lineSeparator());
+                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL,
+                            "Следующий вопрос",
+                            LEGEND_NEXT,
+                            LEGEND_STATISTIC));
+                }
+
 
             } else if (callData.equals(ART_NEXT)) {
                 sendArtQuest(update);
 
-            } else if (callData.equals(TO_MAIN)) {
-                execute(baseButtonKeyboard.createKeyboard(chatId));
+            } else if (callData.equals(LEGEND_NEXT)) {
+                sendLegendQuest(update);
 
             } else if (callData.equals(ART_STATISTIC)) {
                 String statistic = String.format("%.2f", Counter.statistic(settings.getPathUsersArt(), "a", userId));
                 execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
 
-// если ответ неверный, записываем в файл маркер отввета - w
-// и выдаем пользователю сообщение с результатом и игровой клавиатурой
-            } else {
-                FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "w"
-                        + System.lineSeparator());
+            } else if (callData.equals(LEGEND_STATISTIC)) {
+                String statistic = String.format("%.2f", Counter.statistic(settings.getPathUsersLegend(), "a", userId));
+                execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
 
-                execute(functionalGameKeyboard.createKeyboard(chatId, FAIL,
-                        "Следующая картина",
-                        ART_NEXT,
-                        ART_STATISTIC));
+            } else if (callData.equals(TO_MAIN)) {
+                execute(baseButtonKeyboard.createKeyboard(chatId));
             }
         }
     }
 
 
-
-
-// метод формирования и отправки вопроса по художникам
+    // метод формирования и отправки вопроса по художникам
     @SneakyThrows
     public void sendArtQuest(Update update) {
-
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
         long userId = UpdateUtil.getUserFromUpdate(update).getId();
-
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
 
@@ -160,7 +197,37 @@ public class Bot extends TelegramLongPollingBot {
 // прикрепляем к вопросу-картинке клавиатуру с вариантами ответов и функциональными кнопками
         execute(artKeyboard.createKeyboard(chatId,
                 randomGameOption1, randomGameOption2, randomGameOption3, ART_STATISTIC));
+    }
 
+
+    // метод формирования и отправки вопроса по художникам
+    @SneakyThrows
+    public void sendLegendQuest(Update update) {
+        long chatId = UpdateUtil.getChatFromUpdate(update).getId();
+        long userId = UpdateUtil.getUserFromUpdate(update).getId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+
+// выбираем уникальный рандомный объект из json-файла с картинами
+        Question newQuestion = GetObject.getUniqueRandomObject(settings.getJsonLegend(),
+                settings.getPathUsersLegend(), "q", userId);
+
+//  определяем значение полей объекта
+        String gameId = GetFieldValue.getFieldValue(newQuestion, "id");
+        String gameQuestion = GetFieldValue.getFieldValue(newQuestion, "question");
+        String[] randomArrayGameOptions = GetFieldValue.getRandomArrayOptions(newQuestion, "options");
+        String randomGameOption1 = randomArrayGameOptions[0];
+        String randomGameOption2 = randomArrayGameOptions[1];
+        String randomGameOption3 = randomArrayGameOptions[2];
+        String randomGameOption4 = randomArrayGameOptions[3];
+
+// записываем вопрос в файл
+        FileManager.writeToFile(settings.getPathUsersLegend(), "q", userId, gameId
+                + System.lineSeparator());
+
+// прикрепляем вопрос и клавиатуру с вариантами ответов и функциональными кнопками
+        execute(legendKeyboard.createKeyboard(chatId, gameQuestion,
+                randomGameOption1, randomGameOption2, randomGameOption3, randomGameOption4, LEGEND_STATISTIC));
     }
 
 

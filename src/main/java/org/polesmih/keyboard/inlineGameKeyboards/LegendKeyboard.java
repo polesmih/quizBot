@@ -9,11 +9,13 @@ import java.util.List;
 
 public class LegendKeyboard {
 
-    public static SendMessage createKeyboard(long chatId, String opt1, String opt2, String opt3, String opt4) {
+    public SendMessage createKeyboard(long chatId, String question,
+                                      String opt1, String opt2, String opt3, String opt4,
+                                             String statisticCallBack) {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        sendMessage.setText("Ответь на вопрос:");
+        sendMessage.setText(question);
 
         InlineKeyboardButton button1 = InlineKeyboardButton
                 .builder()
@@ -41,17 +43,34 @@ public class LegendKeyboard {
 
         InlineKeyboardButton button4 = InlineKeyboardButton
                 .builder()
-                .text(opt3)
+                .text(opt4)
                 .callbackData(opt4)
                 .build();
         List<InlineKeyboardButton> row4 = new ArrayList<>();
         row4.add(button4);
+
+
+// ряд функциональных кнопок
+        InlineKeyboardButton button5 = InlineKeyboardButton
+                .builder()
+                .text("Статистика")
+                .callbackData(statisticCallBack)
+                .build();
+        InlineKeyboardButton button6 = InlineKeyboardButton
+                .builder()
+                .text("На главную")
+                .callbackData("TO_MAIN")
+                .build();
+        List<InlineKeyboardButton> row5 = new ArrayList<>();
+        row5.add(button5);
+        row5.add(button6);
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
         keyboard.add(row4);
+        keyboard.add(row5);
 
         sendMessage.setReplyMarkup(
                 InlineKeyboardMarkup

@@ -28,7 +28,7 @@ public class BaseButtonKeyboard {
 
         sendMessage.setReplyMarkup(ReplyKeyboardMarkup.builder()
                 .keyboard(Arrays.asList(row1
-//                        , row2
+                        , row2
 //                        , row3
                 ))
                 .resizeKeyboard(true)

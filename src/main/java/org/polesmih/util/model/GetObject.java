@@ -1,13 +1,13 @@
-package org.polesmih.util.gameTools;
+package org.polesmih.util.model;
 
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.polesmih.json.ParserJson;
-import org.polesmih.util.pojo.Question;
+import org.polesmih.bot.settings.FileManager;
+import org.polesmih.util.model.pojo.Question;
 
 import java.io.File;
-import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
@@ -17,8 +17,8 @@ public class GetObject {
 
 
 //    получение случайного объекта из коллекции объектов json
-    public static Question getRandomObject(String fileName) {
-            List<Question> questionList = ParserJson.fileToList(fileName);
+    public static Question getRandomObject(String jsonFileName) {
+            List<Question> questionList = ParserJson.fileToList(jsonFileName);
             Random random = new Random();
             return questionList.get(random.nextInt(questionList.size()));
     }
@@ -44,18 +44,18 @@ public class GetObject {
         Question uniqueQuestion;
 
 // если список объектов с вопросами, которых еще не было, не пустой, выбираем из него случайный объект
-        if (uniqueQuestionList.size() > 0) {
+        if (uniqueQuestionList.size() == 0) {
+            FileManager.cleanFile(pathUserFile, mark, userId);
+            uniqueQuestion = getRandomObject(jsonFileName);
+
+// если все вопросы уже были - очищаем файл и при этом выдаем случайный объект из списка объектов json-файла
+        } else {
+
             uniqueQuestion = uniqueQuestionList
                     .stream()
                     .skip(new Random().nextInt(uniqueQuestionList.size()))
                     .findFirst()
                     .orElse(null);
-
-// если все вопросы уже были - очищаем файл и при этом выдаем случайный объект из списка объектов json-файла
-        } else {
-            FileManager.cleanFile(pathUserFile, mark, userId);
-            uniqueQuestion = getRandomObject(jsonFileName);
-
         }
         return uniqueQuestion;
     }
@@ -63,7 +63,7 @@ public class GetObject {
 
 // получение последней строки с № id из файла пользователя с вопросами
     @SneakyThrows
-    public static String getLastLineFromUserFile (String pathUserFile, String mark, long userId) {
+    public static String getLastLineFromUserFile(String pathUserFile, String mark, long userId) {
 
         LineIterator lineIterator = FileUtils.lineIterator(
                 new File(FileManager.getPathUserFile(pathUserFile, mark, userId).toUri()), "UTF-8");
@@ -87,6 +87,31 @@ public class GetObject {
                 .findAny()
                 .orElse(null);
     }
+
+//
+//    public static String allElementsAllObjectsToString(String fileName) {
+//        List<Question> questionList = new ArrayList<Question>(ParserJson.fileToList(fileName));
+//
+//        return questionList.stream()
+//                .map(Question :: toString)
+//                .collect(Collectors.toList()).toString();
+//    }
+//
+//    public static String getOptionsList (String jsonFileName) {
+//        List<Question> questionsList = ParserJson.fileToList(jsonFileName);
+//
+//// получаем список всех значений полей-массивов ответов всех объектов json-файла
+//        List<String[]> optionsListAllQuestions = questionsList
+//                .stream()
+//                .map(Question::getOptions)
+//                .collect(Collectors.toList());
+//
+//// возвращаем список значений в виде строки, где варианты ответа разделены запятой
+//        return optionsListAllQuestions
+//                .stream()
+//                .map(Object :: toString)
+//                .collect(Collectors.joining(", "));
+//    }
 
 
 }
