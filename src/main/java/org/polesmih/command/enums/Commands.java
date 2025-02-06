@@ -4,6 +4,7 @@ public enum Commands {
 
     START ("/start"),
     KEY ("/key"),
+    RESULT ("/statistic"),
     CLEAN ("/clean"),
     RULES ("/rules"),
     INFO ("/info"),

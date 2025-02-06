@@ -2,6 +2,7 @@ package org.polesmih.bot;
 
 import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
+import org.polesmih.bot.settings.Counter;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.keyboard.BaseButtonKeyboard;
 import org.polesmih.util.UpdateUtil;
@@ -39,6 +40,14 @@ public class CommandHandler extends TelegramLongPollingBot {
 
                 } else if (messageText.equals(KEY.getCommandType())) {
                     execute(baseButtonKeyboard.createKeyboard(chatId));
+
+                } else if (messageText.equals(RESULT.getCommandType())) {
+                    String artStat = String.format("%.0f", Counter.statistic(settings.getPathUsersArt(), "a", user.getId()));
+//                    String legendStat = String.format("%.0f", Counter.statistic(settings.getPathUsersLegend(), "a", user.getId()));
+//                    String netStat = String.format("%.0f", Counter.statistic(settings.getPathUsersNetsuke(), "a", user.getId()));
+
+                    execute(Sender.sendMessage(chatId,
+                            "В \"Угадай художника\" твой результат " + artStat + " %"));
 
                 } else if (messageText.equals(CLEAN.getCommandType())) {
                     execute(Sender.sendMessage(chatId, "Статистика ответов по всем играм удалена"));
