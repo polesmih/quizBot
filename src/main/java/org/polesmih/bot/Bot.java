@@ -3,7 +3,6 @@ package org.polesmih.bot;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
-import org.polesmih.bot.settings.Counter;
 import org.polesmih.bot.settings.FileManager;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.command.CommandTypes;
@@ -37,15 +36,11 @@ public class Bot extends TelegramLongPollingBot {
     final CommandTypes commandType = new CommandTypes();
     final CommandHandler commandHandler = new CommandHandler();
     private final ConfigSettings settings;
-    public static BaseButtonKeyboard baseButtonKeyboard = new BaseButtonKeyboard();
     public final FunctionalGameKeyboard functionalGameKeyboard = new FunctionalGameKeyboard();
     public final ArtKeyboard artKeyboard = new ArtKeyboard();
     public final LegendKeyboard legendKeyboard = new LegendKeyboard();
     public static final String ART_NEXT = "NEXT_PAINT";
-    public static final String ART_STATISTIC = "ART_RESULT";
     public static final String LEGEND_NEXT = "NEXT_LEGEND";
-    public static final String LEGEND_STATISTIC = "LEGEND_RESULT";
-    public static final String TO_MAIN = "TO_MAIN";
 
 
     public Bot() {
@@ -102,9 +97,7 @@ public class Bot extends TelegramLongPollingBot {
                     execute(Sender.sendChatAction(chatId, ActionType.TYPING));
 
                     execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
-                            "Следующая картина",
-                            ART_NEXT,
-                            ART_STATISTIC));
+                            "Следующая картина", ART_NEXT));
 
 // в противном случае (ответ по художникам верный, записываем в файл маркер отввета - 1
 // и выдаем пользователю сообщение с результатом и игровой клавиатурой
@@ -135,9 +128,7 @@ public class Bot extends TelegramLongPollingBot {
                     execute(Sender.sendChatAction(chatId, ActionType.TYPING));
 
                     execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
-                            "Следующий вопрос",
-                            LEGEND_NEXT,
-                            LEGEND_STATISTIC));
+                            "Следующий вопрос", LEGEND_NEXT));
 
                 } else {
                     FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, 1
@@ -158,19 +149,6 @@ public class Bot extends TelegramLongPollingBot {
 
             } else if (callData.equals(LEGEND_NEXT)) {
                 sendLegendQuest(update);
-
-            } else if (callData.equals(ART_STATISTIC)) {
-                String statistic = String.format("%.0f", Counter.statistic(settings.getPathUsersArt(), "a", userId));
-                execute(Sender.sendChatAction(chatId, ActionType.TYPING));
-                execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
-
-            } else if (callData.equals(LEGEND_STATISTIC)) {
-                String statistic = String.format("%.0f", Counter.statistic(settings.getPathUsersLegend(), "a", userId));
-                execute(Sender.sendChatAction(chatId, ActionType.TYPING));
-                execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
-
-            } else if (callData.equals(TO_MAIN)) {
-                execute(baseButtonKeyboard.createKeyboard(chatId));
 
             } else {
                 execute(Sender.sendMessage(chatId, EmojiParser.parseToUnicode(":thinking:")));
@@ -213,7 +191,7 @@ public class Bot extends TelegramLongPollingBot {
 
 // прикрепляем к вопросу-картинке клавиатуру с вариантами ответов и функциональными кнопками
         execute(artKeyboard.createKeyboard(chatId,
-                randomGameOption1, randomGameOption2, randomGameOption3, ART_STATISTIC));
+                randomGameOption1, randomGameOption2, randomGameOption3));
     }
 
 
@@ -247,7 +225,7 @@ public class Bot extends TelegramLongPollingBot {
 
 // прикрепляем вопрос и клавиатуру с вариантами ответов и функциональными кнопками
         execute(legendKeyboard.createKeyboard(chatId, gameQuestion,
-                randomGameOption1, randomGameOption2, randomGameOption3, randomGameOption4, LEGEND_STATISTIC));
+                randomGameOption1, randomGameOption2, randomGameOption3, randomGameOption4));
     }
 
 

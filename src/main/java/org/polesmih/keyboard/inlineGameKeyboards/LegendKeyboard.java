@@ -10,8 +10,7 @@ import java.util.List;
 public class LegendKeyboard {
 
     public SendMessage createKeyboard(long chatId, String question,
-                                      String opt1, String opt2, String opt3, String opt4,
-                                             String statisticCallBack) {
+                                      String opt1, String opt2, String opt3, String opt4) {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
@@ -49,27 +48,11 @@ public class LegendKeyboard {
         row4.add(button4);
 
 
-// ряд функциональных кнопок
-        InlineKeyboardButton button5 = InlineKeyboardButton
-                .builder()
-                .text("Статистика")
-                .callbackData(statisticCallBack)
-                .build();
-        InlineKeyboardButton button6 = InlineKeyboardButton
-                .builder()
-                .text("На главную")
-                .callbackData("TO_MAIN")
-                .build();
-        List<InlineKeyboardButton> row5 = new ArrayList<>();
-        row5.add(button5);
-        row5.add(button6);
-
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
         keyboard.add(row4);
-        keyboard.add(row5);
 
         sendMessage.setReplyMarkup(
                 InlineKeyboardMarkup
