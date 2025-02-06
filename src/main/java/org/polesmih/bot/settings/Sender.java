@@ -1,5 +1,7 @@
 package org.polesmih.bot.settings;
 
+import org.telegram.telegrambots.meta.api.methods.ActionType;
+import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -24,5 +26,13 @@ public class Sender {
         photo.setPhoto(new InputFile(img));
         return photo;
     }
+
+    public static SendChatAction sendChatAction (Long chatId, ActionType text) {
+        SendChatAction sendChatAction = new SendChatAction();
+        sendChatAction.setChatId(chatId.toString());
+        sendChatAction.setAction(text);
+        return sendChatAction;
+    }
+
 
 }

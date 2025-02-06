@@ -13,7 +13,7 @@ public class ArtKeyboard {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        sendMessage.setText("Кто написал эту картину?");
+        sendMessage.setText("У последней картины, что прислал бот, выбери вариант, кто ее написал:");
 
         InlineKeyboardButton button1 = InlineKeyboardButton
                 .builder()

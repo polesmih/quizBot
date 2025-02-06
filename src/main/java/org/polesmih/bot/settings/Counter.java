@@ -15,7 +15,7 @@ public class Counter {
     public static long countRightUserAnswer(String pathUserAnswerFile, String mark, long userId) {
         return createUserLinesAnswers(pathUserAnswerFile, mark, userId).stream()
                 .map(str -> str.charAt(0))
-                .filter(Character::isUpperCase)
+                .filter(Character::isDigit)
                 .count();
     }
 

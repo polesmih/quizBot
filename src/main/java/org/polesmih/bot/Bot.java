@@ -1,5 +1,6 @@
 package org.polesmih.bot;
 
+import com.vdurmont.emoji.EmojiParser;
 import lombok.SneakyThrows;
 import org.polesmih.bot.settings.ConfigSettings;
 import org.polesmih.bot.settings.Counter;
@@ -17,6 +18,7 @@ import org.polesmih.util.model.GetObject;
 import org.polesmih.util.model.ReceiveOptAnsDesc;
 import org.polesmih.util.model.pojo.Question;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.ActionType;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -64,9 +66,6 @@ public class Bot extends TelegramLongPollingBot {
             long chatId = UpdateUtil.getChatFromUpdate(update).getId();
             User user = UpdateUtil.getUserFromUpdate(update);
 
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(update.getMessage().getChatId().toString());
-
             if (commandType.types().contains(messageText)) {
                 commandHandler.onUpdateReceived(update);
 
@@ -85,8 +84,7 @@ public class Bot extends TelegramLongPollingBot {
                 execute(Sender.sendMessage(chatId, UNKNOWN));
             }
 
-
-        } else if (update.hasCallbackQuery()) {
+        } else {
             String callData = update.getCallbackQuery().getData();
             long chatId = UpdateUtil.getChatFromUpdate(update).getId();
             long userId = UpdateUtil.getUserFromUpdate(update).getId();
@@ -94,53 +92,64 @@ public class Bot extends TelegramLongPollingBot {
 // если callData есть в списке вариантов ответа на вопрос по художникам
             if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonArt(),
                     settings.getPathUsersArt(), "q").contains(callData)) {
-// если ответ соответствует ответу по художникам
-                if (callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonArt(),
+// если не ответ соответствует ответу по художникам
+                if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonArt(),
                         settings.getPathUsersArt(), "q"))) {
-// записываем в файл маркер ответа - R, если ответ верный
-                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "R"
+
+                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "w"
                             + System.lineSeparator());
+
+                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+
+                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
+                            "Следующая картина",
+                            ART_NEXT,
+                            ART_STATISTIC));
+
+// в противном случае (ответ по художникам верный, записываем в файл маркер отввета - 1
+// и выдаем пользователю сообщение с результатом и игровой клавиатурой
+                } else {
+                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, 1
+                            + System.lineSeparator());
+
+                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+
 // выдаем пользователю сообщение с результатом и описанием
                     execute(Sender.sendMessage(chatId, WIN +
                             ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonArt(),
                                     settings.getPathUsersArt(), "q")));
 // и сразу же отправляем новый вопрос по художникам
                     sendArtQuest(update);
-
-// в противном случае (ответ по художникам неверный, записываем в файл маркер отввета - w
-// и выдаем пользователю сообщение с результатом и игровой клавиатурой
-                } else {
-                    FileManager.writeToFile(settings.getPathUsersArt(), "a", userId, "w"
-                            + System.lineSeparator());
-                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL,
-                            "Следующая картина",
-                            ART_NEXT,
-                            ART_STATISTIC));
                 }
-
 
 // то же самое по легендам и мифам
             } else if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonLegend(),
                     settings.getPathUsersLegend(), "q").contains(callData)) {
 
-                if (callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonLegend(),
+                if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonLegend(),
                         settings.getPathUsersLegend(), "q"))) {
 
-                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "R"
+                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "w"
                             + System.lineSeparator());
+
+                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+
+                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
+                            "Следующий вопрос",
+                            LEGEND_NEXT,
+                            LEGEND_STATISTIC));
+
+                } else {
+                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, 1
+                            + System.lineSeparator());
+
+                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+
                     execute(Sender.sendMessage(chatId, WIN +
                             ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonLegend(),
                                     settings.getPathUsersLegend(), "q")));
 
                     sendLegendQuest(update);
-
-                } else {
-                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "w"
-                            + System.lineSeparator());
-                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL,
-                            "Следующий вопрос",
-                            LEGEND_NEXT,
-                            LEGEND_STATISTIC));
                 }
 
 
@@ -151,15 +160,20 @@ public class Bot extends TelegramLongPollingBot {
                 sendLegendQuest(update);
 
             } else if (callData.equals(ART_STATISTIC)) {
-                String statistic = String.format("%.2f", Counter.statistic(settings.getPathUsersArt(), "a", userId));
+                String statistic = String.format("%.0f", Counter.statistic(settings.getPathUsersArt(), "a", userId));
+                execute(Sender.sendChatAction(chatId, ActionType.TYPING));
                 execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
 
             } else if (callData.equals(LEGEND_STATISTIC)) {
-                String statistic = String.format("%.2f", Counter.statistic(settings.getPathUsersLegend(), "a", userId));
+                String statistic = String.format("%.0f", Counter.statistic(settings.getPathUsersLegend(), "a", userId));
+                execute(Sender.sendChatAction(chatId, ActionType.TYPING));
                 execute(Sender.sendMessage(chatId, "Ты угадал " + statistic + " %"));
 
             } else if (callData.equals(TO_MAIN)) {
                 execute(baseButtonKeyboard.createKeyboard(chatId));
+
+            } else {
+                execute(Sender.sendMessage(chatId, EmojiParser.parseToUnicode(":thinking:")));
             }
         }
     }
@@ -189,6 +203,9 @@ public class Bot extends TelegramLongPollingBot {
         FileManager.writeToFile(settings.getPathUsersArt(), "q", userId, gameId
                 + System.lineSeparator());
 
+// если картинка будет долго загружаться - отправка пользователю визуализацию загрузки
+        execute(Sender.sendChatAction(chatId, ActionType.UPLOADPHOTO));
+
 // отправляем вопрос-картинку
         execute(Sender.sendPhoto(
                 chatId,
@@ -200,7 +217,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    // метод формирования и отправки вопроса по художникам
+    // метод формирования и отправки вопроса по легендам и мифам
     @SneakyThrows
     public void sendLegendQuest(Update update) {
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
@@ -224,6 +241,9 @@ public class Bot extends TelegramLongPollingBot {
 // записываем вопрос в файл
         FileManager.writeToFile(settings.getPathUsersLegend(), "q", userId, gameId
                 + System.lineSeparator());
+
+// если вопрос будет долго загружаться - отправка пользователю визуализацию печатания
+        execute(Sender.sendChatAction(chatId, ActionType.TYPING));
 
 // прикрепляем вопрос и клавиатуру с вариантами ответов и функциональными кнопками
         execute(legendKeyboard.createKeyboard(chatId, gameQuestion,

@@ -88,30 +88,4 @@ public class GetObject {
                 .orElse(null);
     }
 
-//
-//    public static String allElementsAllObjectsToString(String fileName) {
-//        List<Question> questionList = new ArrayList<Question>(ParserJson.fileToList(fileName));
-//
-//        return questionList.stream()
-//                .map(Question :: toString)
-//                .collect(Collectors.toList()).toString();
-//    }
-//
-//    public static String getOptionsList (String jsonFileName) {
-//        List<Question> questionsList = ParserJson.fileToList(jsonFileName);
-//
-//// получаем список всех значений полей-массивов ответов всех объектов json-файла
-//        List<String[]> optionsListAllQuestions = questionsList
-//                .stream()
-//                .map(Question::getOptions)
-//                .collect(Collectors.toList());
-//
-//// возвращаем список значений в виде строки, где варианты ответа разделены запятой
-//        return optionsListAllQuestions
-//                .stream()
-//                .map(Object :: toString)
-//                .collect(Collectors.joining(", "));
-//    }
-
-
 }
