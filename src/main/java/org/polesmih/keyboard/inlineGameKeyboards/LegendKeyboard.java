@@ -16,7 +16,6 @@ public class LegendKeyboard {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(question);
-
         InlineKeyboardButton button1 = InlineKeyboardButton
                 .builder()
                 .text(opt1)

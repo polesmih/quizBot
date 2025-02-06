@@ -27,7 +27,8 @@ public class BaseButtonKeyboard {
         row3.add(StartButtons.NETSUKE.getButtonType());
 
         sendMessage.setReplyMarkup(ReplyKeyboardMarkup.builder()
-                .keyboard(Arrays.asList(row1
+                .keyboard(Arrays.asList(
+                        row1
                         , row2
 //                        , row3
                 ))
