@@ -37,15 +37,20 @@ Telegram Bot API
   
 2. Обработка ответов пользователя (верных и неверных). запроса статистики и ее очистка
    
-![IMG_3797](https://github.com/user-attachments/assets/584023a0-d3c5-4d9b-b2f4-b16815c1d7a8)  
+![IMG_3797](https://github.com/user-attachments/assets/d1654c7b-5ed3-47ae-82cf-f51ee06f83f5)  
+  
 
-![IMG_3798](https://github.com/user-attachments/assets/33fef31a-ac8a-44ef-a545-c7ac5b84af0f)  
+![IMG_3798](https://github.com/user-attachments/assets/137c0d50-a958-4127-917d-1d5806404029)  
+  
 
-![IMG_3802](https://github.com/user-attachments/assets/f526b93b-d3a1-4ba5-8525-eda23ca3e6bc)  
+![IMG_3802](https://github.com/user-attachments/assets/f65f8a65-1c0a-40a4-842b-527c052bab08)  
+  
 
-![IMG_3803](https://github.com/user-attachments/assets/3f59e286-13c0-4499-9ad6-5d32370f8663)  
+![IMG_3803](https://github.com/user-attachments/assets/b65a9246-ae49-4f1f-bf98-66907226e209)  
+  
 
-![IMG_3804](https://github.com/user-attachments/assets/e0fbd174-82dd-4727-aa90-f7c719c3910e)  
+![IMG_3804](https://github.com/user-attachments/assets/8cc38d65-0287-4cae-b5af-d1a9f22cb7da)  
+  
 
 
 
