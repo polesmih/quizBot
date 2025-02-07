@@ -28,7 +28,8 @@ Telegram Bot API
    
 ![IMG_8182](https://github.com/user-attachments/assets/9fae6987-bfae-4095-b2e8-c16c20c00a41)  
   
-![file](https://github.com/user-attachments/assets/7aac1589-762a-4bb1-99bc-bc904330e549)  
+![file](https://github.com/user-attachments/assets/00579e36-c1bd-4efb-aa4e-ca36a0770ea8)  
+  
   
   
 
