@@ -2,6 +2,8 @@
 Telegram-бот игра "Викторина".   
 
 Бот в Telegram: [@ArtQuizzes_bot](https://t.me/ArtQuizzes_bot)  
+
+[Статья на Хабр](https://habr.com/ru/articles/881332/)  
  
 
 ## Лицензия  
