@@ -24,13 +24,18 @@ public class BaseButtonKeyboard {
         row2.add(StartButtons.LEGEND.getButtonType());
 
         KeyboardRow row3 = new KeyboardRow();
-        row3.add(StartButtons.NETSUKE.getButtonType());
+        row3.add(StartButtons.POET.getButtonType());
+
+        KeyboardRow row4 = new KeyboardRow();
+        row4.add(StartButtons.NETSUKE.getButtonType());
+
 
         sendMessage.setReplyMarkup(ReplyKeyboardMarkup.builder()
                 .keyboard(Arrays.asList(
                         row1
 //                        , row2
-//                        , row3
+                        , row3
+//                        , row4
                 ))
                 .resizeKeyboard(true)
                  .oneTimeKeyboard(true)

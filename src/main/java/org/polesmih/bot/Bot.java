@@ -7,10 +7,9 @@ import org.polesmih.bot.settings.FileManager;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.command.CommandTypes;
 import org.polesmih.db.WriteUser;
-import org.polesmih.keyboard.BaseButtonKeyboard;
-import org.polesmih.keyboard.inlineGameKeyboards.ArtKeyboard;
+import org.polesmih.keyboard.inlineGameKeyboards.ThreeOptionsAndPhotoKeyboard;
 import org.polesmih.keyboard.inlineGameKeyboards.FunctionalGameKeyboard;
-import org.polesmih.keyboard.inlineGameKeyboards.LegendKeyboard;
+import org.polesmih.keyboard.inlineGameKeyboards.FourOptionsAndTextKeyboard;
 import org.polesmih.util.UpdateUtil;
 import org.polesmih.util.model.GetFieldValue;
 import org.polesmih.util.model.GetObject;
@@ -37,10 +36,11 @@ public class Bot extends TelegramLongPollingBot {
     final CommandHandler commandHandler = new CommandHandler();
     private final ConfigSettings settings;
     public final FunctionalGameKeyboard functionalGameKeyboard = new FunctionalGameKeyboard();
-    public final ArtKeyboard artKeyboard = new ArtKeyboard();
-    public final LegendKeyboard legendKeyboard = new LegendKeyboard();
+    public final ThreeOptionsAndPhotoKeyboard artKeyboard = new ThreeOptionsAndPhotoKeyboard();
+    public final FourOptionsAndTextKeyboard legendKeyboard = new FourOptionsAndTextKeyboard();
     public static final String ART_NEXT = "NEXT_PAINT";
     public static final String LEGEND_NEXT = "NEXT_LEGEND";
+    public static final String POET_NEXT = "NEXT_POET";
 
 
     public Bot() {
@@ -65,15 +65,26 @@ public class Bot extends TelegramLongPollingBot {
                 commandHandler.onUpdateReceived(update);
 
             } else if (messageText.equals(ART.getButtonType())) {
-                WriteUser.artWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName());
-                sendArtQuest(update);
+                WriteUser.artWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
+                );
+                sendQuestWithThreeOptionsAndPhoto(update,
+                        settings.getJsonArt(),
+                        settings.getPathUsersArt(),
+                        settings.getPathFilesPaint());
 
             } else if (messageText.equals(LEGEND.getButtonType())) {
-                WriteUser.legendWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName());
-                sendLegendQuest(update);
+                WriteUser.legendWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
+                );
+                sendQuestWithFourOptionsAndText(update,
+                        settings.getJsonLegend(),
+                        settings.getPathUsersLegend());
 
-            } else if (messageText.equals(NETSUKE.getButtonType())) {
-                WriteUser.netsukeWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName());
+            } else if (messageText.equals(POET.getButtonType())) {
+                WriteUser.poetsWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
+                );
+                sendQuestWithFourOptionsAndText(update,
+                        settings.getJsonPoets(),
+                        settings.getPathUsersPoets());
 
             } else {
                 execute(Sender.sendMessage(chatId, UNKNOWN));
@@ -86,7 +97,10 @@ public class Bot extends TelegramLongPollingBot {
 
 // если callData есть в списке вариантов ответа на вопрос по художникам
             if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonArt(),
-                    settings.getPathUsersArt(), "q").contains(callData)) {
+                    settings.getPathUsersArt(), "q").contains(callData)
+// и callData поступила от соответствующего пользователя
+//                    && update.getCallbackQuery().getFrom().getId().equals(userId)
+            ) {
 // если не ответ соответствует ответу по художникам
                 if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonArt(),
                         settings.getPathUsersArt(), "q"))) {
@@ -112,43 +126,87 @@ public class Bot extends TelegramLongPollingBot {
                             ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonArt(),
                                     settings.getPathUsersArt(), "q")));
 // и сразу же отправляем новый вопрос по художникам
-                    sendArtQuest(update);
+                    sendQuestWithThreeOptionsAndPhoto(update,
+                            settings.getJsonArt(),
+                            settings.getPathUsersArt(),
+                            settings.getPathFilesPaint());
                 }
 
-// то же самое по легендам и мифам
-            } else if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonLegend(),
-                    settings.getPathUsersLegend(), "q").contains(callData)) {
+// то же самое по поэтам
+            } else if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonPoets(),
+                    settings.getPathUsersPoets(), "q").contains(callData)) {
 
-                if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonLegend(),
-                        settings.getPathUsersLegend(), "q"))) {
+                if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonPoets(),
+                        settings.getPathUsersPoets(), "q"))) {
 
-                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "w"
+                    FileManager.writeToFile(settings.getPathUsersPoets(), "a", userId, "w"
                             + System.lineSeparator());
 
                     execute(Sender.sendChatAction(chatId, ActionType.TYPING));
 
                     execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
-                            "Следующий вопрос", LEGEND_NEXT));
+                            "Следующий вопрос", POET_NEXT));
 
                 } else {
-                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, 1
+                    FileManager.writeToFile(settings.getPathUsersPoets(), "a", userId, 1
                             + System.lineSeparator());
 
                     execute(Sender.sendChatAction(chatId, ActionType.TYPING));
 
                     execute(Sender.sendMessage(chatId, WIN +
-                            ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonLegend(),
-                                    settings.getPathUsersLegend(), "q")));
+                            ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonPoets(),
+                                    settings.getPathUsersPoets(), "q")));
 
-                    sendLegendQuest(update);
+                    sendQuestWithFourOptionsAndText(update,
+                            settings.getJsonPoets(),
+                            settings.getPathUsersPoets());
                 }
 
 
+//// то же самое по легендам и мифам
+//            } else if (ReceiveOptAnsDesc.receiveOptions(update, settings.getJsonLegend(),
+//                    settings.getPathUsersLegend(), "q").contains(callData)) {
+//
+//                if (!callData.equals(ReceiveOptAnsDesc.receiveAnswer(update, settings.getJsonLegend(),
+//                        settings.getPathUsersLegend(), "q"))) {
+//
+//                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, "w"
+//                            + System.lineSeparator());
+//
+//                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+//
+//                    execute(functionalGameKeyboard.createKeyboard(chatId, FAIL + callData + ELSE,
+//                            "Следующий вопрос", LEGEND_NEXT));
+//
+//                } else {
+//                    FileManager.writeToFile(settings.getPathUsersLegend(), "a", userId, 1
+//                            + System.lineSeparator());
+//
+//                    execute(Sender.sendChatAction(chatId, ActionType.TYPING));
+//
+//                    execute(Sender.sendMessage(chatId, WIN +
+//                            ReceiveOptAnsDesc.receiveDescription(update, settings.getJsonLegend(),
+//                                    settings.getPathUsersLegend(), "q")));
+//
+//                    sendLegendQuest(update);
+//                }
+
+
             } else if (callData.equals(ART_NEXT)) {
-                sendArtQuest(update);
+                sendQuestWithThreeOptionsAndPhoto(update,
+                        settings.getJsonArt(),
+                        settings.getPathUsersArt(),
+                        settings.getPathFilesPaint());
+
+            } else if (callData.equals(POET_NEXT)) {
+                sendQuestWithFourOptionsAndText(update,
+                        settings.getJsonPoets(),
+                        settings.getPathUsersPoets());
 
             } else if (callData.equals(LEGEND_NEXT)) {
-                sendLegendQuest(update);
+                sendQuestWithFourOptionsAndText(update,
+                        settings.getJsonLegend(),
+                        settings.getPathUsersLegend());
 
             } else {
                 execute(Sender.sendMessage(chatId, EmojiParser.parseToUnicode(":thinking:")));
@@ -157,17 +215,17 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    // метод формирования и отправки вопроса по художникам
+// метод формирования и отправки вопроса, где 3 варианта ответа и картинка
     @SneakyThrows
-    public void sendArtQuest(Update update) {
+    public void sendQuestWithThreeOptionsAndPhoto(Update update, String jsonPath, String pathUserFile, String paintPath) {
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
         long userId = UpdateUtil.getUserFromUpdate(update).getId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
 
-// выбираем уникальный рандомный объект из json-файла с картинами
-        Question newQuestion = GetObject.getUniqueRandomObject(settings.getJsonArt(),
-                settings.getPathUsersArt(), "q", userId);
+// выбираем уникальный рандомный объект из json-файла
+        Question newQuestion = GetObject.getUniqueRandomObject(jsonPath,
+                pathUserFile, "q", userId);
 
 //  определяем значение полей объекта
         String gameId = GetFieldValue.getFieldValue(newQuestion, "id");
@@ -178,7 +236,7 @@ public class Bot extends TelegramLongPollingBot {
         String randomGameOption3 = randomArrayGameOptions[2];
 
 // записываем вопрос в файл
-        FileManager.writeToFile(settings.getPathUsersArt(), "q", userId, gameId
+        FileManager.writeToFile(pathUserFile, "q", userId, gameId
                 + System.lineSeparator());
 
 // если картинка будет долго загружаться - отправка пользователю визуализацию загрузки
@@ -187,7 +245,7 @@ public class Bot extends TelegramLongPollingBot {
 // отправляем вопрос-картинку
         execute(Sender.sendPhoto(
                 chatId,
-                settings.getPathFilesPaint() + gameQuestion));
+                paintPath + gameQuestion));
 
 // прикрепляем к вопросу-картинке клавиатуру с вариантами ответов и функциональными кнопками
         execute(artKeyboard.createKeyboard(chatId,
@@ -195,17 +253,17 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    // метод формирования и отправки вопроса по легендам и мифам
+// метод формирования и отправки вопроса, где 4 варианта ответа и текст
     @SneakyThrows
-    public void sendLegendQuest(Update update) {
+    public void sendQuestWithFourOptionsAndText(Update update, String jsonPath, String pathUserFile) {
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
         long userId = UpdateUtil.getUserFromUpdate(update).getId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
 
-// выбираем уникальный рандомный объект из json-файла с картинами
-        Question newQuestion = GetObject.getUniqueRandomObject(settings.getJsonLegend(),
-                settings.getPathUsersLegend(), "q", userId);
+// выбираем уникальный рандомный объект из json-файла
+        Question newQuestion = GetObject.getUniqueRandomObject(jsonPath,
+                pathUserFile, "q", userId);
 
 //  определяем значение полей объекта
         String gameId = GetFieldValue.getFieldValue(newQuestion, "id");
@@ -217,7 +275,7 @@ public class Bot extends TelegramLongPollingBot {
         String randomGameOption4 = randomArrayGameOptions[3];
 
 // записываем вопрос в файл
-        FileManager.writeToFile(settings.getPathUsersLegend(), "q", userId, gameId
+        FileManager.writeToFile(pathUserFile, "q", userId, gameId
                 + System.lineSeparator());
 
 // если вопрос будет долго загружаться - отправка пользователю визуализацию печатания

@@ -5,6 +5,7 @@ import com.vdurmont.emoji.EmojiParser;
 public enum StartButtons {
 
     ART("Угадай художника" + EmojiParser.parseToUnicode(":art:")),
+    POET("Угадай поэта" + EmojiParser.parseToUnicode(":scroll:")),
     LEGEND("Легенды и мифы Древней Греции" + EmojiParser.parseToUnicode(":classical_building:")),
     NETSUKE ("Нэцке"
             + EmojiParser.parseToUnicode(":shinto_shrine:")

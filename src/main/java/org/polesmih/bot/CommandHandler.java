@@ -36,24 +36,31 @@ public class CommandHandler extends TelegramLongPollingBot {
 // создаем сразу при старте пустые файлы пользователя для записи индикаторов вопросов
                     FileManager.writeToFile(settings.getPathUsersArt(), "q", user.getId(), "");
                     FileManager.writeToFile(settings.getPathUsersLegend(), "q", user.getId(), "");
-                    FileManager.writeToFile(settings.getPathUsersNetsuke(), "q", user.getId(), "");
+                    FileManager.writeToFile(settings.getPathUsersPoets(), "q", user.getId(), "");
 
                 } else if (messageText.equals(KEY.getCommandType())) {
                     execute(baseButtonKeyboard.createKeyboard(chatId));
 
                 } else if (messageText.equals(RESULT.getCommandType())) {
-                    String artStat = String.format("%.0f", Counter.statistic(settings.getPathUsersArt(), "a", user.getId()));
-//                    String legendStat = String.format("%.0f", Counter.statistic(settings.getPathUsersLegend(), "a", user.getId()));
-//                    String netStat = String.format("%.0f", Counter.statistic(settings.getPathUsersNetsuke(), "a", user.getId()));
+                    double countArtStatistic = Counter.statistic(settings.getPathUsersArt(), "a", user.getId());
+                    double countPoetStatistic = Counter.statistic(settings.getPathUsersPoets(), "a", user.getId());
+//                    double countLegendStatistic = Counter.statistic(settings.getPathUsersLegend(), "a", user.getId());
 
-                    execute(Sender.sendMessage(chatId,
-                            "В \"Угадай художника\" твой результат " + artStat + " %"));
+                    String artStatistic = String.format("%.1f", countArtStatistic) + " %";
+                    String poetStatistic = String.format("%.1f", countPoetStatistic) + " %";
+//                    String legendStatistic = String.format("%.1f", countLegendStatistic) + " %";
+
+                    execute(Sender.sendMessage(chatId, "В \"Угадай художника\" твой результат " + artStatistic
+                    + "\nВ \"Угадай поэта\" твой результат " + poetStatistic
+//                            + "\nВ \"Легенды и мифы Древней Греции\" твой результат " + legendStatistic)
+                    + NEXT ));
+
 
                 } else if (messageText.equals(CLEAN.getCommandType())) {
-                    execute(Sender.sendMessage(chatId, "Статистика ответов по всем играм удалена"));
+                    execute(Sender.sendMessage(chatId, "Статистика ответов по всем играм удалена" + NEXT));
                     FileManager.cleanFile(settings.getPathUsersArt(), "a", user.getId());
                     FileManager.cleanFile(settings.getPathUsersLegend(), "a", user.getId());
-                    FileManager.cleanFile(settings.getPathUsersNetsuke(), "a", user.getId());
+                    FileManager.cleanFile(settings.getPathUsersPoets(), "a", user.getId());
 
                 } else if (messageText.equals(RULES.getCommandType())) {
                     execute(Sender.sendMessage(chatId, INSTRUCTION));

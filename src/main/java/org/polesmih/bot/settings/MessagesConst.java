@@ -8,7 +8,6 @@ public class MessagesConst {
     public final static String HELLO = "!  " +
             EmojiParser.parseToUnicode(":wink:") +
             "\n\nВ этой игре ты сможешь проверить свои знания в разных областях культуры.  " +
-            "\nПока у нас одна викторина, но со временем тебя ждет много интересного!  " +
             EmojiParser.parseToUnicode(":sparkles:") +
             "\n\n" + EmojiParser.parseToUnicode(":exclamation:") +
             "  Если что-то пойдет не так или бот перестанет тебе отвечать " +
@@ -26,6 +25,9 @@ public class MessagesConst {
     public final static String FAIL = EmojiParser.parseToUnicode(":x:") +
             "  Не угадал..." +
             "\nЭто не ";
+
+    public final static String NEXT = ".\n\nДля продолжения выбери вариант ответа к последнему вопросу " +
+            EmojiParser.parseToUnicode(":point_up:");
 
     public final static String INSTRUCTION = EmojiParser.parseToUnicode(":small_red_triangle:") +
             "Твоя задача - ответить на вопросы, которые высылает бот. " +
