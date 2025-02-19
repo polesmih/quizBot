@@ -28,7 +28,9 @@ Telegram Bot API
 
 ### 1. Активация бота и меню
    
-![IMG_8182](https://github.com/user-attachments/assets/9fae6987-bfae-4095-b2e8-c16c20c00a41)  
+
+![IMG_3840](https://github.com/user-attachments/assets/a285572a-fddc-496d-88c2-5e7bd94f320d)  
+  
   
 ![file](https://github.com/user-attachments/assets/00579e36-c1bd-4efb-aa4e-ca36a0770ea8)  
   
@@ -48,8 +50,11 @@ Telegram Bot API
 ![IMG_3802](https://github.com/user-attachments/assets/f65f8a65-1c0a-40a4-842b-527c052bab08)  
   
 
-![IMG_3803](https://github.com/user-attachments/assets/b65a9246-ae49-4f1f-bf98-66907226e209)  
-  
+![IMG_3837](https://github.com/user-attachments/assets/4c7c112d-c47f-4e78-9843-5bbf705957ed)  
+
+
+![IMG_3839](https://github.com/user-attachments/assets/9a5e703d-b29e-42e6-a0cc-7ef91c55e4f1)   
+ 
 
 ![IMG_3804](https://github.com/user-attachments/assets/8cc38d65-0287-4cae-b5af-d1a9f22cb7da)  
   
