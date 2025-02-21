@@ -30,7 +30,7 @@ public class WriteUser {
 
     }
 
-    public static void netsukeWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
+    public static void poetsWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
 
         user.setDate(date);
         user.setUserTgId(id);
@@ -38,7 +38,7 @@ public class WriteUser {
 
         UserModel userModel = new UserModel(date, id, firstName);
 
-        UserConnection.netsukeUserAccounting(userModel);
+        UserConnection.poetsUserAccounting(userModel);
 
     }
 

@@ -18,6 +18,7 @@ public class UserConnection {
                 + FieldName.FIRST_NAME + ")"
                 + "VALUES (?, ?, ?)";
 
+
         try {
 
             PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(insert);
@@ -58,9 +59,9 @@ public class UserConnection {
 
 
     @SneakyThrows
-    public static void netsukeUserAccounting(UserModel userModel) {
+    public static void poetsUserAccounting(UserModel userModel) {
 
-        String insert = "INSERT INTO " + TableName.NETSUKE_VISITS
+        String insert = "INSERT INTO " + TableName.POET_VISITS
                 + "(" + FieldName.DATE + ", "
                 + FieldName.TG_ID + ", "
                 + FieldName.FIRST_NAME + ")"
