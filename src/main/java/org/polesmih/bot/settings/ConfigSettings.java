@@ -22,10 +22,10 @@ public class ConfigSettings {
     private String pathFilesPaint;
     private String jsonArt;
     private String jsonLegend;
-    private String jsonNetsuke;
+    private String jsonPoets;
     private String pathUsersArt;
     private String pathUsersLegend;
-    private String pathUsersNetsuke;
+    private String pathUsersPoets;
 
 
 
@@ -90,8 +90,8 @@ public class ConfigSettings {
                 throw new RuntimeException("Json value is null");
             }
 
-            jsonNetsuke = properties.getProperty("json.netsuke");
-            if (jsonNetsuke == null) {
+            jsonPoets = properties.getProperty("json.poets");
+            if (jsonPoets == null) {
                 throw new RuntimeException("Json value is null");
             }
 
@@ -105,8 +105,8 @@ public class ConfigSettings {
                 throw new RuntimeException("Json value is null");
             }
 
-            pathUsersNetsuke = properties.getProperty("path.users.netsuke");
-            if (pathUsersNetsuke == null) {
+            pathUsersPoets = properties.getProperty("path.users.poets");
+            if (pathUsersPoets == null) {
                 throw new RuntimeException("Json value is null");
             }
 

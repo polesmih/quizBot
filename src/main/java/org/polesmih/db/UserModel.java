@@ -17,6 +17,6 @@ public class UserModel {
 
     private LocalDateTime date;
     private Long userTgId;
-    private String firstName;
+    private String name;
 
 }

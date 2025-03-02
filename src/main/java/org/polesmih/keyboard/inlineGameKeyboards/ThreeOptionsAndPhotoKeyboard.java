@@ -7,14 +7,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-public class LegendKeyboard {
+public class ThreeOptionsAndPhotoKeyboard {
 
-    public SendMessage createKeyboard(long chatId, String question,
-                                      String opt1, String opt2, String opt3, String opt4) {
+    public SendMessage createKeyboard(long chatId, String opt1, String opt2, String opt3) {
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        sendMessage.setText(question);
+        sendMessage.setText("У последней картины, что прислал бот, выбери вариант, кто ее написал:");
+
         InlineKeyboardButton button1 = InlineKeyboardButton
                 .builder()
                 .text(opt1)
@@ -39,20 +39,11 @@ public class LegendKeyboard {
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         row3.add(button3);
 
-        InlineKeyboardButton button4 = InlineKeyboardButton
-                .builder()
-                .text(opt4)
-                .callbackData(opt4)
-                .build();
-        List<InlineKeyboardButton> row4 = new ArrayList<>();
-        row4.add(button4);
-
-
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(row1);
         keyboard.add(row2);
         keyboard.add(row3);
-        keyboard.add(row4);
+
 
         sendMessage.setReplyMarkup(
                 InlineKeyboardMarkup
@@ -63,7 +54,4 @@ public class LegendKeyboard {
         return sendMessage;
     }
 
-
 }
-
-

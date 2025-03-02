@@ -6,39 +6,16 @@ import java.time.LocalDateTime;
 public class WriteUser {
 
     static UserModel user = new UserModel();
-    public static void artWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
+
+    public static void writeUserIntoDb(LocalDateTime date, Long id, String name) {
 
         user.setDate(date);
         user.setUserTgId(id);
-        user.setFirstName(firstName);
+        user.setName(name);
 
-        UserModel userModel = new UserModel(date, id, firstName);
+        UserModel userModel = new UserModel(date, id, name);
 
-        UserConnection.artUserAccounting(userModel);
-
-    }
-
-    public static void legendWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
-
-        user.setDate(date);
-        user.setUserTgId(id);
-        user.setFirstName(firstName);
-
-        UserModel userModel = new UserModel(date, id, firstName);
-
-        UserConnection.legendUserAccounting(userModel);
-
-    }
-
-    public static void netsukeWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
-
-        user.setDate(date);
-        user.setUserTgId(id);
-        user.setFirstName(firstName);
-
-        UserModel userModel = new UserModel(date, id, firstName);
-
-        UserConnection.netsukeUserAccounting(userModel);
+        UserConnection.userAccounting(userModel);
 
     }
 
