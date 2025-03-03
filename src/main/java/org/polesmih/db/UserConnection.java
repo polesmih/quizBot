@@ -24,7 +24,7 @@ public class UserConnection {
             PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(insert);
             preparedStatement.setString(1, String.valueOf(userModel.getDate()));
             preparedStatement.setString(2, String.valueOf(userModel.getUserTgId()));
-            preparedStatement.setString(3, userModel.getName());
+            preparedStatement.setString(3, userModel.getFirstName());
 
             preparedStatement.execute();
 

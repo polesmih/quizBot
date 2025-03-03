@@ -59,8 +59,8 @@ public class CommandHandler extends TelegramLongPollingBot {
 
 
                 } else if (messageText.equals(CLEAN.getCommandType())) {
-                    execute(cleanButtonKeyboard.createKeyboard(chatId));
 
+                    execute(cleanButtonKeyboard.createKeyboard(chatId));
 
                 } else if (messageText.equals(RULES.getCommandType())) {
                     execute(Sender.sendMessage(chatId, INSTRUCTION));

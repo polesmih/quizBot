@@ -66,29 +66,30 @@ public class Bot extends TelegramLongPollingBot {
                 commandHandler.onUpdateReceived(update);
 
             } else if (messageText.equals(ART.getButtonType())) {
+
                 WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
-                        "Художники"
-                );
+                        "Художники");
                 sendQuestWithThreeOptionsAndPhoto(update,
                         settings.getJsonArt(),
                         settings.getPathUsersArt(),
                         settings.getPathFilesPaint());
 
             } else if (messageText.equals(LEGEND.getButtonType())) {
+
                 WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
-                        "Легенды"
-                );
+                        "Легенды");
                 sendQuestWithFourOptionsAndText(update,
                         settings.getJsonLegend(),
                         settings.getPathUsersLegend());
 
             } else if (messageText.equals(POET.getButtonType())) {
+
                 WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
-                        "Поэты"
-                );
+                        "Поэты");
                 sendQuestWithFourOptionsAndText(update,
                         settings.getJsonPoets(),
                         settings.getPathUsersPoets());
+
 
             } else if (messageText.equals(CLEAN_ART.getButtonType())) {
                 execute(Sender.sendMessage(chatId, "Статистика ответов по \"Угадай художника\" удалена" + NEXT));
@@ -99,6 +100,8 @@ public class Bot extends TelegramLongPollingBot {
             } else if (messageText.equals(CLEAN_POET.getButtonType())) {
                 execute(Sender.sendMessage(chatId, "Статистика ответов по \"Угадай поэта\" удалена" + NEXT));
                 FileManager.cleanFile(settings.getPathUsersPoets(), "a", user.getId());
+
+
 
             } else {
                 execute(Sender.sendMessage(chatId, UNKNOWN));
@@ -229,6 +232,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
+
     // метод формирования и отправки вопроса, где 3 варианта ответа и картинка
     @SneakyThrows
     public void sendQuestWithThreeOptionsAndPhoto(Update update, String jsonPath, String pathUserFile, String paintPath) {
@@ -265,6 +269,7 @@ public class Bot extends TelegramLongPollingBot {
         execute(artKeyboard.createKeyboard(chatId,
                 randomGameOption1, randomGameOption2, randomGameOption3));
     }
+
 
 
     // метод формирования и отправки вопроса, где 4 варианта ответа и текст

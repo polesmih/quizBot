@@ -7,17 +7,17 @@ public class WriteUser {
 
     static UserModel user = new UserModel();
 
+
     public static void writeUserIntoDb(LocalDateTime date, Long id, String name) {
 
         user.setDate(date);
         user.setUserTgId(id);
-        user.setName(name);
+        user.setFirstName(firstName);
 
-        UserModel userModel = new UserModel(date, id, name);
+        UserModel userModel = new UserModel(date, id, firstName);
 
-        UserConnection.userAccounting(userModel);
+        UserConnection.artUserAccounting(userModel);
 
     }
-
 
 }
