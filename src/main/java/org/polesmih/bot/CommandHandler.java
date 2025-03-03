@@ -5,6 +5,7 @@ import org.polesmih.bot.settings.ConfigSettings;
 import org.polesmih.bot.settings.Counter;
 import org.polesmih.bot.settings.Sender;
 import org.polesmih.keyboard.BaseButtonKeyboard;
+import org.polesmih.keyboard.CleanButtonKeyboard;
 import org.polesmih.util.UpdateUtil;
 import org.polesmih.bot.settings.FileManager;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,6 +18,7 @@ import static org.polesmih.command.enums.Commands.*;
 public class CommandHandler extends TelegramLongPollingBot {
     private final static ConfigSettings settings = ConfigSettings.getInstance();
     final BaseButtonKeyboard baseButtonKeyboard = new BaseButtonKeyboard();
+    final CleanButtonKeyboard cleanButtonKeyboard = new CleanButtonKeyboard();
 
 
     @SneakyThrows
@@ -57,10 +59,8 @@ public class CommandHandler extends TelegramLongPollingBot {
 
 
                 } else if (messageText.equals(CLEAN.getCommandType())) {
-                    execute(Sender.sendMessage(chatId, "Статистика ответов по всем играм удалена" + NEXT));
-                    FileManager.cleanFile(settings.getPathUsersArt(), "a", user.getId());
-                    FileManager.cleanFile(settings.getPathUsersLegend(), "a", user.getId());
-                    FileManager.cleanFile(settings.getPathUsersPoets(), "a", user.getId());
+
+                    execute(cleanButtonKeyboard.createKeyboard(chatId));
 
                 } else if (messageText.equals(RULES.getCommandType())) {
                     execute(Sender.sendMessage(chatId, INSTRUCTION));

@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 public class WriteUser {
 
     static UserModel user = new UserModel();
-    public static void artWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
+
+
+    public static void writeUserIntoDb(LocalDateTime date, Long id, String name) {
 
         user.setDate(date);
         user.setUserTgId(id);
@@ -17,30 +19,5 @@ public class WriteUser {
         UserConnection.artUserAccounting(userModel);
 
     }
-
-    public static void legendWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
-
-        user.setDate(date);
-        user.setUserTgId(id);
-        user.setFirstName(firstName);
-
-        UserModel userModel = new UserModel(date, id, firstName);
-
-        UserConnection.legendUserAccounting(userModel);
-
-    }
-
-    public static void poetsWriteUserIntoDb(LocalDateTime date, Long id, String firstName) {
-
-        user.setDate(date);
-        user.setUserTgId(id);
-        user.setFirstName(firstName);
-
-        UserModel userModel = new UserModel(date, id, firstName);
-
-        UserConnection.poetsUserAccounting(userModel);
-
-    }
-
 
 }

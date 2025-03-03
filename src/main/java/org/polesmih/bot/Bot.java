@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 
 import static org.polesmih.bot.settings.MessagesConst.*;
 import static org.polesmih.command.BotCommands.*;
+import static org.polesmih.keyboard.enums.CleanButtons.*;
 import static org.polesmih.keyboard.enums.StartButtons.*;
 
 
@@ -65,26 +66,42 @@ public class Bot extends TelegramLongPollingBot {
                 commandHandler.onUpdateReceived(update);
 
             } else if (messageText.equals(ART.getButtonType())) {
-                WriteUser.artWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
-                );
+
+                WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
+                        "Художники");
                 sendQuestWithThreeOptionsAndPhoto(update,
                         settings.getJsonArt(),
                         settings.getPathUsersArt(),
                         settings.getPathFilesPaint());
 
             } else if (messageText.equals(LEGEND.getButtonType())) {
-                WriteUser.legendWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
-                );
+
+                WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
+                        "Легенды");
                 sendQuestWithFourOptionsAndText(update,
                         settings.getJsonLegend(),
                         settings.getPathUsersLegend());
 
             } else if (messageText.equals(POET.getButtonType())) {
-                WriteUser.poetsWriteUserIntoDb(LocalDateTime.now().withNano(0), user.getId(), user.getFirstName()
-                );
+
+                WriteUser.writeUserIntoDb(LocalDateTime.now().withNano(0), user.getId(),
+                        "Поэты");
                 sendQuestWithFourOptionsAndText(update,
                         settings.getJsonPoets(),
                         settings.getPathUsersPoets());
+
+
+            } else if (messageText.equals(CLEAN_ART.getButtonType())) {
+                execute(Sender.sendMessage(chatId, "Статистика ответов по \"Угадай художника\" удалена" + NEXT));
+                FileManager.cleanFile(settings.getPathUsersArt(), "a", user.getId());
+            } else if (messageText.equals(CLEAN_LEGEND.getButtonType())) {
+                execute(Sender.sendMessage(chatId, "Статистика ответов по \"Легенды и мифы Древней Греции\" удалена" + NEXT));
+                FileManager.cleanFile(settings.getPathUsersLegend(), "a", user.getId());
+            } else if (messageText.equals(CLEAN_POET.getButtonType())) {
+                execute(Sender.sendMessage(chatId, "Статистика ответов по \"Угадай поэта\" удалена" + NEXT));
+                FileManager.cleanFile(settings.getPathUsersPoets(), "a", user.getId());
+
+
 
             } else {
                 execute(Sender.sendMessage(chatId, UNKNOWN));
@@ -215,7 +232,8 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-// метод формирования и отправки вопроса, где 3 варианта ответа и картинка
+
+    // метод формирования и отправки вопроса, где 3 варианта ответа и картинка
     @SneakyThrows
     public void sendQuestWithThreeOptionsAndPhoto(Update update, String jsonPath, String pathUserFile, String paintPath) {
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
@@ -253,7 +271,8 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-// метод формирования и отправки вопроса, где 4 варианта ответа и текст
+
+    // метод формирования и отправки вопроса, где 4 варианта ответа и текст
     @SneakyThrows
     public void sendQuestWithFourOptionsAndText(Update update, String jsonPath, String pathUserFile) {
         long chatId = UpdateUtil.getChatFromUpdate(update).getId();
